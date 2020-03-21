@@ -3,33 +3,13 @@ function! related#detect()
     return
   endif
 
-  let g:related_configs = {}
-  if get(g:, 'related_enable_default_configs', 1)
-    let g:related_configs = {
-          \  'jsx': {
-          \    'filetypes': ['javascript', 'javascript.jsx', 'snap', 'css', 'scss.css'],
-          \    'mappings': {
-          \      'gj': ['{}/{}.js', '{}/{}.jsx'],
-          \      'gc': ['{}/{}.css', '{}/{}.scss'],
-          \      'gt': ['{}/{}.test.js', '{}/{}.test.jsx'],
-          \      'gs': ['{}/__snapshots__/{}.test.js.snap', '{}/__snapshots__/{}.test.jsx.snap']
-          \    }
-          \  },
-          \  'vimscript': {
-          \    'filetypes': ['vim'],
-          \    'mappings': {
-          \      'ga': ['{}/autoload/{}.vim'],
-          \      'gs': ['{}/plugin/{}.vim', '{}/ftpplugin/{}.vim'],
-          \    },
-          \  },
-          \}
-  endif
+  let s:related_configs = copy(g:related_configs_global)
 
   let file = findfile('.related.json', '.;')
   if !empty(file) && filereadable(file)
     try
       let value = projectionist#json_parse(readfile(file))
-      call extend(g:related_configs, value)
+      call extend(s:related_configs, value)
     catch /^invalid JSON:/
       return
     endtry
@@ -37,7 +17,7 @@ function! related#detect()
 
   let b:related_matches = []
 
-  for [name, config] in items(g:related_configs)
+  for [name, config] in items(s:related_configs)
     if index(config.filetypes, &ft) > -1
       for [mapping, patterns] in items(config.mappings)
         execute 'nnoremap <buffer> <silent> <nowait> ' . mapping . ' :call related#switch(' . string(name) . ', ' . string(mapping) . ')<CR>'
@@ -59,7 +39,7 @@ function! related#detect()
 endfunction
 
 function! related#switch(name, mapping)
-  let patterns = g:related_configs[a:name]['mappings'][a:mapping]
+  let patterns = s:related_configs[a:name]['mappings'][a:mapping]
   for pattern in patterns
     let file = pattern
     for m in b:related_matches
