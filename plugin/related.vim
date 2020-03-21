@@ -21,7 +21,7 @@ if get(g:, 'related_enable_default_configs', 1)
         \    'filetypes': ['vim'],
         \    'mappings': {
         \      'ga': ['{}/autoload/{}.vim'],
-        \      'gs': ['{}/plugin/{}.vim', '{}/ftpplugin/{}.vim'],
+        \      'gs': ['{}/plugin/{}.vim', '{}/ftplugin/{}.vim'],
         \    },
         \  },
         \}
