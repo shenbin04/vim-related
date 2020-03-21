@@ -1,18 +1,26 @@
+let s:related_config_files = {}
+
 function! related#detect()
   if empty(&ft)
     return
   endif
 
-  let s:related_configs = copy(g:related_configs_global)
+  let s:related_configs = g:related_configs_global
 
   let file = findfile('.related.json', '.;')
   if !empty(file) && filereadable(file)
-    try
-      let value = projectionist#json_parse(readfile(file))
-      call extend(s:related_configs, value)
-    catch /^invalid JSON:/
-      return
-    endtry
+    let config = s:related_config_files.get(file)
+
+    if empty(config)
+      try
+        let config = projectionist#json_parse(readfile(file))
+        let s:related_config_files[file] = config
+      catch /^invalid JSON:/
+        return
+      endtry
+    endif
+
+    let s:related_configs = extend(copy(s:related_configs), config)
   endif
 
   let b:related_matches = []
