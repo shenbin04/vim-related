@@ -1,6 +1,6 @@
 let s:related_config_files = {}
 
-function! related#detect()
+function! related#detect() abort
   if empty(&ft)
     return
   endif
@@ -13,7 +13,7 @@ function! related#detect()
 
     if empty(config)
       try
-        let config = projectionist#json_parse(readfile(file))
+        let config = related#json_parse(readfile(file))
         let s:related_config_files[file] = config
       catch /^invalid JSON:/
         return
@@ -46,7 +46,7 @@ function! related#detect()
   endfor
 endfunction
 
-function! related#switch(name, mapping)
+function! related#switch(name, mapping) abort
   let patterns = s:related_configs[a:name]['mappings'][a:mapping]
   for pattern in patterns
     let file = pattern
@@ -64,3 +64,15 @@ function! related#switch(name, mapping)
   echohl None
 endfunction
 
+function! related#json_parse(string) abort
+  let [null, false, true] = ['', 0, 1]
+  let string = type(a:string) == type([]) ? join(a:string, ' ') : a:string
+  let stripped = substitute(string, '\C"\(\\.\|[^"\\]\)*"', '', 'g')
+  if stripped !~# "[^,:{}\\[\\]0-9.\\-+Eaeflnr-u \n\r\t]"
+    try
+      return eval(substitute(string, "[\r\n]", ' ', 'g'))
+    catch
+    endtry
+  endif
+  throw "invalid JSON: ".string
+endfunction
