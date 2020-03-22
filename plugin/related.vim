@@ -1,7 +1,7 @@
 let g:related_configs_global = {}
 if get(g:, 'related_enable_default_configs', 1)
   let g:related_configs_global = {
-        \  'jsx': {
+        \  'javascript': {
         \    'filetypes': ['javascript', 'javascript.jsx', 'snap', 'css', 'scss.css'],
         \    'mappings': {
         \      'gj': ['{}/{}.js', '{}/{}.jsx'],
@@ -21,7 +21,9 @@ if get(g:, 'related_enable_default_configs', 1)
         \    'filetypes': ['vim'],
         \    'mappings': {
         \      'ga': ['{}/autoload/{}.vim'],
-        \      'gs': ['{}/plugin/{}.vim', '{}/ftplugin/{}.vim'],
+        \      'gp': ['{}/plugin/{}.vim', '{}/ftplugin/{}.vim'],
+        \      'gs': ['{}/syntax/{}.vim'],
+        \      'gi': ['{}/indent/{}.vim'],
         \    },
         \  },
         \}
