@@ -36,7 +36,7 @@ function! related#detect() abort
 
         for pattern in patterns
           let regex = substitute(pattern, '{}', '(.+)', 'g')
-          let matches = matchlist(expand('%:p'), '\v' . regex)
+          let matches = matchlist(expand('%:p'), '\v' . regex . '$')
           if !empty(matches)
             let b:related_matches = filter(matches[1:], '!empty(v:val)')
           endif
