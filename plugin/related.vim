@@ -10,6 +10,15 @@ if get(g:, 'related_enable_default_configs', 1)
         \      'gs': ['{}/__snapshots__/{}.test.js.snap', '{}/__snapshots__/{}.test.jsx.snap']
         \    }
         \  },
+        \  'typescript': {
+        \    'filetypes': ['typescript', 'typescriptreact', 'snap', 'css', 'scss.css'],
+        \    'mappings': {
+        \      'gj': ['{}/{}.ts', '{}/{}.tsx'],
+        \      'gc': ['{}/{}.css', '{}/{}.scss'],
+        \      'gt': ['{}/{}.test.ts', '{}/{}.test.tsx', '{}/__tests__/{}.test.ts', '{}/__tests__/{}.test.tsx'],
+        \      'gs': ['{}/__snapshots__/{}.test.ts.snap', '{}/__snapshots__/{}.test.tsx.snap']
+        \    }
+        \  },
         \  'python': {
         \    'filetypes': ['python'],
         \    'mappings': {
