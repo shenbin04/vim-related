@@ -6,7 +6,7 @@ if get(g:, 'related_enable_default_configs', 1)
         \    'mappings': {
         \      'gj': ['{}/{}.js', '{}/{}.jsx'],
         \      'gc': ['{}/{}.css', '{}/{}.scss'],
-        \      'gt': ['{}/{}.test.js', '{}/{}.test.jsx'],
+        \      'gt': ['{}/{}.test.js', '{}/{}.test.jsx', '{}/__tests__/{}.test.js', '{}/__tests__/{}.test.jsx'],
         \      'gs': ['{}/__snapshots__/{}.test.js.snap', '{}/__snapshots__/{}.test.jsx.snap']
         \    }
         \  },
