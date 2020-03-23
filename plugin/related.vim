@@ -26,6 +26,20 @@ if get(g:, 'related_enable_default_configs', 1)
         \      'gi': ['{}/indent/{}.vim'],
         \    },
         \  },
+        \  'objc': {
+        \    'filetypes': ['objc', 'objcpp'],
+        \    'mappings': {
+        \      'gh': ['{}/{}.h'],
+        \      'gm': ['{}/{}.m'],
+        \    },
+        \  },
+        \  'c': {
+        \    'filetypes': ['c', 'cpp'],
+        \    'mappings': {
+        \      'gh': ['{}/{}.h'],
+        \      'gc': ['{}/{}.c', '{}/{}.cpp'],
+        \    },
+        \  },
         \}
 endif
 
