@@ -30,15 +30,11 @@ function! related#detect() abort
       for [mapping, patterns] in items(config.mappings)
         execute 'nnoremap <buffer> <silent> <nowait> ' . mapping . ' :call related#switch(' . string(name) . ', ' . string(mapping) . ')<CR>'
 
-        if !empty(b:related_matches)
-          continue
-        endif
-
         for pattern in patterns
           let regex = substitute(pattern, '{}', '(.+)', 'g')
           let matches = matchlist(expand('%:p'), '\v' . regex . '$')
           if !empty(matches)
-            let b:related_matches = filter(matches[1:], '!empty(v:val)')
+            call insert(b:related_matches, filter(matches[1:], '!empty(v:val)'))
           endif
         endfor
       endfor
@@ -50,13 +46,15 @@ function! related#switch(name, mapping) abort
   let patterns = s:related_configs[a:name]['mappings'][a:mapping]
   for pattern in patterns
     let file = pattern
-    for m in b:related_matches
-      let file = substitute(file, '{}', m, '')
+    for matches in b:related_matches
+      for m in matches
+        let file = substitute(file, '{}', m, '')
+        if getftime(file) > 0
+          execute 'edit ' . fnameescape(fnamemodify(file, ':.'))
+          return
+        endif
+      endfor
     endfor
-    if getftime(file) > 0
-      execute 'edit ' . fnameescape(fnamemodify(file, ':.'))
-      return
-    endif
   endfor
 
   echohl ErrorMsg
