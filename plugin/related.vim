@@ -49,6 +49,13 @@ if get(g:, 'related_enable_default_configs', 1)
         \      'gc': ['{}/{}.c', '{}/{}.cpp'],
         \    },
         \  },
+        \  'go': {
+        \    'filetypes': ['go'],
+        \    'mappings': {
+        \      'gj': ['{}/{}.go'],
+        \      'gt': ['{}/{}_test.go'],
+        \    },
+        \  },
         \}
 endif
 
