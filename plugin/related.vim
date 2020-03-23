@@ -22,7 +22,7 @@ if get(g:, 'related_enable_default_configs', 1)
         \  'python': {
         \    'filetypes': ['python'],
         \    'mappings': {
-        \      'gj': ['{}/{}.py'],
+        \      'gp': ['{}/{}.py'],
         \      'gt': ['{}/{}_test.py'],
         \    },
         \  },
