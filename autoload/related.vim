@@ -45,15 +45,17 @@ endfunction
 function! related#switch(name, mapping) abort
   let patterns = s:related_configs[a:name]['mappings'][a:mapping]
   for pattern in patterns
-    let file = pattern
     for matches in b:related_matches
+      let file = pattern
+
       for m in matches
         let file = substitute(file, '{}', m, '')
-        if getftime(file) > 0
-          execute 'edit ' . fnameescape(fnamemodify(file, ':.'))
-          return
-        endif
       endfor
+
+      if file != expand('%:p') && getftime(file) > 0
+        execute 'edit ' . fnameescape(fnamemodify(file, ':.'))
+        return
+      endif
     endfor
   endfor
 
