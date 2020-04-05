@@ -9,17 +9,18 @@ function! related#detect() abort
 
   let file = findfile('.related.json', '.;')
   if !empty(file) && filereadable(file)
-    let config = s:related_config_files.get(file)
+    let config = get(s:related_config_files, file)
 
     if empty(config)
       try
-        let config = related#json_parse(readfile(file))
+        let config = json_decode(readfile(file))
         let s:related_config_files[file] = config
-      catch /^invalid JSON:/
-        return
+      catch
+        echohl ErrorMsg
+        echom 'Invalid .related.json config.'
+        echohl None
       endtry
     endif
-
     let s:related_configs = extend(copy(s:related_configs), config)
   endif
 
@@ -62,17 +63,4 @@ function! related#switch(name, mapping) abort
   echohl ErrorMsg
   echom 'No related file'
   echohl None
-endfunction
-
-function! related#json_parse(string) abort
-  let [null, false, true] = ['', 0, 1]
-  let string = type(a:string) == type([]) ? join(a:string, ' ') : a:string
-  let stripped = substitute(string, '\C"\(\\.\|[^"\\]\)*"', '', 'g')
-  if stripped !~# "[^,:{}\\[\\]0-9.\\-+Eaeflnr-u \n\r\t]"
-    try
-      return eval(substitute(string, "[\r\n]", ' ', 'g'))
-    catch
-    endtry
-  endif
-  throw "invalid JSON: ".string
 endfunction
